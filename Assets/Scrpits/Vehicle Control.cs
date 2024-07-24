@@ -9,7 +9,7 @@ public class VehicleControl : MonoBehaviour
     private float forwardInput;
 
 
-    private float turnSpeed = 25f;
+    private float turnSpeed = 30f;
     public float maxSpeed = 20f; 
     public float acceleration = 0.5f; 
     private float currentSpeed = 0f;

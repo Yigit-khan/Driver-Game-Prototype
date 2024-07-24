@@ -4,17 +4,25 @@ using UnityEngine;
 
 public class FollowPlayer : MonoBehaviour
 {
-    public GameObject player;
-    private Vector3 offset = new Vector3(0,5,-8);
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public Transform target; // Takip edilecek hedef (örneðin, araç)
+    public Vector3 offset; // Kameranýn hedeften olan ofseti
+    public float followSpeed = 5f; // Takip hýzý
+    public float rotationSpeed = 5f; // Dönüþ hýzý
 
-    // Update is called once per frame
-    void LateUpdate()
+    private void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
+        if (target != null)
+        {
+            // Hedef pozisyonuna ofset uygulama
+            Vector3 desiredPosition = target.position + offset;
+            // Kamera pozisyonunu yumuþak bir þekilde hedefe yaklaþtýrma
+            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, followSpeed * Time.deltaTime);
+            transform.position = smoothedPosition;
+
+            // Kameranýn hedefle ayný açýda dönmesini saðlama
+            Quaternion desiredRotation = Quaternion.LookRotation(target.position - transform.position);
+            Quaternion smoothedRotation = Quaternion.Slerp(transform.rotation, desiredRotation, rotationSpeed * Time.deltaTime);
+            transform.rotation = smoothedRotation;
+        }
     }
 }
